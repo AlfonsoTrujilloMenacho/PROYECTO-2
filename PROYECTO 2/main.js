@@ -93,10 +93,12 @@ const products = [
   }
 ];
 
-function showProducts(products) {
+// function showProducts(products){}
+const showProducts = (products) => {
   const PRODUCTS = document.querySelector('.products');
-  // PRODUCTS.innerHTML = '';
-  for (const product of products) {
+  PRODUCTS.innerHTML = '';
+  // for (const product of products) {}
+  PRODUCTS.forEach((product) => {
     const productCard = document.createElement('div');
     productCard.classList.add('product-card');
 
@@ -136,8 +138,8 @@ function showProducts(products) {
     productCard.appendChild(seller);
 
     PRODUCTS.appendChild(productCard);
-  }
-}
+  });
+};
 showProducts(products);
 
 // function showFilter() {
@@ -171,9 +173,21 @@ filters.appendChild(sellerFilter);
 filters.appendChild(priceFilter);
 filters.appendChild(cleanButton);
 
-sellerOptions.forEach((option) => {
-  const sellerOption = document.createElement('option');
-  sellerOption.textContent = option.text;
-  sellerOption.value = option.value;
-  sellerSelect.appendChild(sellerOption);
-});
+// CONTINUAMOS MAÑANA POR AQUI CON LA FOTO QUE TENEMOS EN ASSETS DE LA CLASE DE AYER DE JS
+const innitFilter = () => {
+  priceButton.addEventListener('click', (event) => {
+    const value = event.target.value;
+
+    const productsFiltered = products
+      .filter((elem) => elem.name.toLocaleLowerCase())
+      .includes(value.toLocaleLowerCase());
+  });
+  console.log(showProducts(productsFiltered));
+};
+
+// const innitFilter = (option) => {
+//   const sellerOption = document.createElement('option');
+//   sellerOption.textContent = option.text;
+//   sellerOption.value = option.value;
+//   sellerSelect.appendChild(sellerOption);
+// };

@@ -175,6 +175,7 @@ body {
 }
 .product-card:hover {
   transform: scale(1.1);
+  margin: 10px;
 }
 
 .product-card > img {
@@ -183,7 +184,7 @@ body {
   transition: all 0.3s ease;
 }
 .product-card > img:hover {
-  transform: scale(1.5);
+  transform: scale(1.4);
   border: var(--rtc-border-m);
   border-radius: var(--rtc--border-radius-s);
 }
@@ -303,6 +304,13 @@ body {
     padding: var(--rtc-padding-l);
     padding-right: 0;
     margin-right: var(--rtc-margin-xxs);
+  }
+  .product-card:hover {
+    transform: scale(1.1);
+    margin: 0;
+  }
+  .product-card > img:hover {
+    transform: scale(1.3);
   }
 }
 

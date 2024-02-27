@@ -4,7 +4,7 @@ const products = [
   {
     image:
       'https://thumb.pccomponentes.com/w-300-300/articles/1005/10057282/1639-hp-essential-255-g8-amd-3020e-8gb-256gb-ssd-156.jpg',
-    name: 'Lenovo IdeaPad Slim 3',
+    name: 'Lenovo IdeaPad 3',
     price: 559,
     stars: 4,
     reviews: 250,
@@ -13,7 +13,7 @@ const products = [
   {
     image:
       'https://thumb.pccomponentes.com/w-300-300/articles/1067/10674300/1355-alurin-flex-advance-intel-core-i5-1155g7-16gb-500gb-ssd-156-windows-11-home-comprar.jpg',
-    name: 'Alurin Go Start Intel Celeron',
+    name: 'Alurin Go Start',
     price: 399,
     stars: 5,
     reviews: 150,
@@ -40,7 +40,7 @@ const products = [
   {
     image:
       'https://thumb.pccomponentes.com/w-300-300/articles/1067/10674372/1165-pccom-revolt-4070-fhd-intel-core-i7-13700hx-32gb-1tb-ssd-rtx-4070-173.jpg',
-    name: 'Alurin Flex Advance',
+    name: 'Alurin Flex Ad.',
     price: 799,
     stars: 4,
     reviews: 220,
@@ -51,7 +51,7 @@ const products = [
       'https://thumb.pccomponentes.com/w-300-300/articles/1072/10720412/1198-asus-tuf-gaming-a15-2023-fa507xi-lp024-amd-ryzen-9-7940hs-32gb-512gb-ssd-rtx-4070-156.jpg',
     name: 'Asus Tuf Gaming ',
     price: 299,
-    stars: 5,
+    stars: 2,
     reviews: 170,
     seller: 'PcComponentes'
   },
@@ -76,7 +76,7 @@ const products = [
   {
     image:
       'https://thumb.pccomponentes.com/w-300-300/articles/1079/10791958/1178-dell-vostro-3520-intel-core-i5-1235u-16gb-512gb-ssd-156.jpg',
-    name: 'Lenovo IdeaPad Slim',
+    name: 'Lenovo IdeaPad S.',
     price: 599,
     stars: 3,
     reviews: 280,
@@ -93,12 +93,14 @@ const products = [
   }
 ];
 
-// function showProducts(products){}
+//* HACEMOS FUNCION PARA PINTAR LOS PRODUCTOS
+
 const showProducts = (products) => {
   const PRODUCTS = document.querySelector('.products');
+
   PRODUCTS.innerHTML = '';
-  // for (const product of products) {}
-  PRODUCTS.forEach((product) => {
+
+  for (const product of products) {
     const productCard = document.createElement('div');
     productCard.classList.add('product-card');
 
@@ -110,7 +112,7 @@ const showProducts = (products) => {
     name.textContent = product.name;
 
     const price = document.createElement('h3');
-    price.textContent = product.price;
+    price.textContent = `${product.price} €`;
 
     const points = document.createElement('div');
     points.classList.add('points');
@@ -120,6 +122,12 @@ const showProducts = (products) => {
     for (let i = 1; i <= 5; i++) {
       const star = document.createElement('p');
       star.classList.add('star');
+
+      if (i <= product.stars) {
+        star.style.backgroundColor = 'yellow';
+      } else {
+        star.style.backgroundColor = '#b9b8b8';
+      }
       stars.appendChild(star);
     }
 
@@ -138,56 +146,92 @@ const showProducts = (products) => {
     productCard.appendChild(seller);
 
     PRODUCTS.appendChild(productCard);
-  });
+  }
 };
 showProducts(products);
 
-// function showFilter() {
+//* CREAMOS LA SECCION DE FILTROS CON LOS FILTROS DE PRECIO Y VENDEDOR
+
 const filters = document.querySelector('.filter');
+
 const sellerFilter = document.createElement('div');
 sellerFilter.classList.add('seller-filter');
+
 const priceFilter = document.createElement('div');
 priceFilter.classList.add('price-filter');
+
 const sellerSelect = document.createElement('select');
-const sellerOptions = [
-  { text: 'Todas las vendedores', value: '' },
-  { text: 'Pc Componentes', value: '1' },
-  { text: 'Amazon', value: '2' },
-  { text: 'MediaMarkt', value: '3' },
-  { text: 'Privalia', value: '4' }
-];
 const priceInput = document.createElement('input');
 priceInput.setAttribute('type', 'number');
 priceInput.placeholder = 'Inserta un precio';
+
 const priceButton = document.createElement('button');
 priceButton.textContent = 'BUSCAR';
 priceButton.classList.add('price-button');
 const cleanButton = document.createElement('button');
 cleanButton.textContent = 'LIMPIAR';
+
 cleanButton.classList.add('clean-button');
 
 sellerFilter.appendChild(sellerSelect);
 priceFilter.appendChild(priceInput);
 priceFilter.appendChild(priceButton);
+
 filters.appendChild(sellerFilter);
 filters.appendChild(priceFilter);
 filters.appendChild(cleanButton);
 
-// CONTINUAMOS MAÑANA POR AQUI CON LA FOTO QUE TENEMOS EN ASSETS DE LA CLASE DE AYER DE JS
-const innitFilter = () => {
-  priceButton.addEventListener('click', (event) => {
-    const value = event.target.value;
+//* LE DAMOS FUNCIONALIDAD A LOS FILTROS
 
-    const productsFiltered = products
-      .filter((elem) => elem.name.toLocaleLowerCase())
-      .includes(value.toLocaleLowerCase());
-  });
-  console.log(showProducts(productsFiltered));
+//! POR VENDEDOR
+const filterProductsBySeller = () => {
+  const selectedSeller = sellerSelect.value;
+  const filteredProducts = products.filter(
+    (product) =>
+      product.seller.toLocaleLowerCase() === selectedSeller.toLocaleLowerCase()
+  );
+  showProducts(filteredProducts);
+};
+sellerSelect.addEventListener('change', filterProductsBySeller);
+
+const showAllProducts = () => {
+  showProducts(products);
 };
 
-// const innitFilter = (option) => {
-//   const sellerOption = document.createElement('option');
-//   sellerOption.textContent = option.text;
-//   sellerOption.value = option.value;
-//   sellerSelect.appendChild(sellerOption);
-// };
+const showSellerOptions = () => {
+  const Sellers = [...new Set(products.map((product) => product.seller))];
+  Sellers.forEach((seller) => {
+    const option = document.createElement('option');
+    option.textContent = seller;
+    option.value = seller.toLowerCase();
+    sellerSelect.appendChild(option);
+  });
+};
+
+showAllProducts();
+showSellerOptions();
+
+//! POR PRECIO
+const filterProductsByPrice = (maxPrice) => {
+  const filteredProductsByPrice = products.filter(
+    (product) => product.price < maxPrice
+  );
+  showProducts(filteredProductsByPrice);
+};
+
+priceButton.addEventListener('click', () => {
+  const maxPrice = parseFloat(priceInput.value);
+  if (!isNaN(maxPrice)) {
+    filterProductsByPrice(maxPrice);
+  } else {
+    alert('Por favor, introduce un precio válido.');
+  }
+});
+showProducts(products);
+
+//! BOTÓN PARA LIMPIAR LOS DEMÁS FILTROS
+cleanButton.addEventListener('click', () => {
+  showProducts(products);
+});
+
+showProducts(products);
